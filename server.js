@@ -9,6 +9,10 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 app.use(express.static(__dirname + '/public'));
 
+hbs.registerHelper('getCurrentYear', ()=>{
+  return new Date().getFullYear();
+});
+
 app.use((req, res, next)=>{
   var now = new Date().toString();
   var log = `Now: ${now} ${req.method} ${req.url}`;
@@ -19,9 +23,9 @@ app.use((req, res, next)=>{
   next();
 })
 
-app.use((req, res, next)=>{
-  res.render('maintenance.hbs');
-});
+// app.use((req, res, next)=>{
+//   res.render('maintenance.hbs');
+// });
 
 app.get('/about', (req, res)=>{
   res.render('about.hbs', {
@@ -31,12 +35,16 @@ app.get('/about', (req, res)=>{
 })
 
 app.get('/', (req, res)=>{
-  res.render('about.hbs', {
+  res.render('home.hbs', {
     pageTitle: 'Home Page',
     currentYear: new Date().getFullYear(),
     welcomeMsg: 'Welcome to this Website!'
   });
 });
+
+app.get('/projects', (req, res)=>{
+  res.render('projects.hbs');
+})
 
 app.get('/json', (req, res)=>{
   res.send({
